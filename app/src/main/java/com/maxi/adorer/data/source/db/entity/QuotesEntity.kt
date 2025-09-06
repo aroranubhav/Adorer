@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.maxi.adorer.data.source.db.util.LocalConstants.Columns.ID
 import com.maxi.adorer.data.source.db.util.LocalConstants.Columns.QUOTE
 import com.maxi.adorer.data.source.db.util.LocalConstants.Tables.QUOTES
+import com.maxi.adorer.domain.model.Quote
 
 @Entity(QUOTES)
 data class QuotesEntity(
@@ -15,3 +16,6 @@ data class QuotesEntity(
     @ColumnInfo(QUOTE)
     val quote: String
 )
+
+fun QuotesEntity.toQuote(): Quote =
+    Quote(id, quote)

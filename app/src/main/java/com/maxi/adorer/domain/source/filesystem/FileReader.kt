@@ -4,5 +4,5 @@ import com.maxi.adorer.domain.model.Quote
 
 interface FileReader {
 
-    suspend fun readQuotesFromFile(): List<Quote>
+    suspend fun readQuotesFromFile(fileName: String): List<Quote>
 }

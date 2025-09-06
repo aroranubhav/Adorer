@@ -10,6 +10,7 @@ import com.maxi.adorer.domain.model.Quote
 import com.maxi.adorer.domain.model.toQuoteEntity
 import com.maxi.adorer.domain.model.toSentQuoteEntity
 import com.maxi.adorer.domain.repository.QuotesRepository
+import com.maxi.adorer.domain.source.datastore.AppDatastore
 import com.maxi.adorer.domain.source.filesystem.FileReader
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class DefaultQuotesRepository @Inject constructor(
     private val quotesDao: QuotesDao,
     private val sentQuotesDao: SentQuotesDao,
-    private val fileReader: FileReader
+    private val fileReader: FileReader,
+    private val dataStore: AppDatastore
 ) : QuotesRepository {
 
     override suspend fun seedDb(fileName: String): Resource<Unit> {
@@ -28,8 +30,8 @@ class DefaultQuotesRepository @Inject constructor(
             quotesDao.insertQuotes(quotes.toQuotesEntityList())
         }) {
             is Resource.Success -> {
+                dataStore.markDbSeedingDone()
                 Resource.Success(Unit)
-                //TODO: mark the seeding done!
             }
 
             is Resource.DatabaseError -> {

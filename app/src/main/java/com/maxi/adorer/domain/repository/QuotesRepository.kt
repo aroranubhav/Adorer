@@ -6,9 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface QuotesRepository {
 
-    suspend fun seedDb(): Resource<Unit>
+    suspend fun seedDb(fileName: String): Resource<Unit>
 
-    fun getQuotes(): Resource<Flow<Quote>>
+    fun getQuote(): Flow<Resource<Quote>>
 
     suspend fun insertQuote(quote: Quote): Resource<Unit>
+
+    fun getQuotes(): Flow<Resource<List<Quote>>>
 }

@@ -4,9 +4,11 @@ import com.maxi.adorer.common.Resource
 import com.maxi.adorer.data.common.safeDbCall
 import com.maxi.adorer.data.common.toQuotesEntityList
 import com.maxi.adorer.data.source.db.dao.QuotesDao
+import com.maxi.adorer.data.source.db.dao.SentQuotesDao
 import com.maxi.adorer.data.source.db.entity.toQuote
 import com.maxi.adorer.domain.model.Quote
 import com.maxi.adorer.domain.model.toQuoteEntity
+import com.maxi.adorer.domain.model.toSentQuoteEntity
 import com.maxi.adorer.domain.repository.QuotesRepository
 import com.maxi.adorer.domain.source.filesystem.FileReader
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +18,7 @@ import javax.inject.Inject
 
 class DefaultQuotesRepository @Inject constructor(
     private val quotesDao: QuotesDao,
-    private val sentQuotesDao: QuotesDao,
+    private val sentQuotesDao: SentQuotesDao,
     private val fileReader: FileReader
 ) : QuotesRepository {
 
@@ -61,7 +63,13 @@ class DefaultQuotesRepository @Inject constructor(
     }
 
 
-    override suspend fun insertQuote(quote: Quote): Resource<Unit> {
+    override suspend fun insertSentQuote(quote: Quote, dateTime: String): Resource<Unit> {
+        return safeDbCall {
+            sentQuotesDao.insertQuote(quote.toSentQuoteEntity(dateTime))
+        }
+    }
+
+    override suspend fun insetQuote(quote: Quote): Resource<Unit> {
         return safeDbCall {
             quotesDao.insertQuote(quote.toQuoteEntity())
         }

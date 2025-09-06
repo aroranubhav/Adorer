@@ -24,4 +24,7 @@ interface QuotesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertQuote(quote: QuotesEntity): Long
+
+    @Query("SELECT * FROM quotes")
+    fun getQuotes(): Flow<List<QuotesEntity>>
 }

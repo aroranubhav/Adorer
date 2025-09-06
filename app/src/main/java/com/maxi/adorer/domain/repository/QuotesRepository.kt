@@ -10,7 +10,9 @@ interface QuotesRepository {
 
     fun getQuote(): Flow<Resource<Quote>>
 
-    suspend fun insertQuote(quote: Quote): Resource<Unit>
+    suspend fun insertSentQuote(quote: Quote, dateTime: String): Resource<Unit>
+
+    suspend fun insetQuote(quote: Quote): Resource<Unit>
 
     fun getQuotes(): Flow<Resource<List<Quote>>>
 }

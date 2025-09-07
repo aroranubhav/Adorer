@@ -9,7 +9,7 @@ import com.maxi.adorer.data.common.Constants.DB_SEED_DATA_STORE
 import com.maxi.adorer.domain.source.datastore.AppDatastore
 import kotlinx.coroutines.flow.first
 
-class DefaultAppDateStore(
+class DefaultAppDataStore(
     private val context: Context
 ) : AppDatastore {
 

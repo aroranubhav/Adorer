@@ -3,8 +3,10 @@ package com.maxi.adorer.data.repository
 import com.maxi.adorer.common.Resource
 import com.maxi.adorer.data.common.safeDbCall
 import com.maxi.adorer.data.common.toQuotesEntityList
+import com.maxi.adorer.data.source.db.dao.ErrorsDao
 import com.maxi.adorer.data.source.db.dao.QuotesDao
 import com.maxi.adorer.data.source.db.dao.SentQuotesDao
+import com.maxi.adorer.data.source.db.entity.ErrorsEntity
 import com.maxi.adorer.data.source.db.entity.toQuote
 import com.maxi.adorer.domain.model.Quote
 import com.maxi.adorer.domain.model.toQuoteEntity
@@ -20,6 +22,7 @@ import javax.inject.Inject
 class DefaultQuotesRepository @Inject constructor(
     private val quotesDao: QuotesDao,
     private val sentQuotesDao: SentQuotesDao,
+    private val errorsDao: ErrorsDao,
     private val fileReader: FileReader,
     private val dataStore: AppDatastore
 ) : QuotesRepository {
@@ -65,7 +68,10 @@ class DefaultQuotesRepository @Inject constructor(
     }
 
 
-    override suspend fun insertSentQuote(quote: Quote, dateTime: String): Resource<Unit> {
+    override suspend fun insertSentQuote(
+        quote: Quote,
+        dateTime: String
+    ): Resource<Unit> {
         return safeDbCall {
             sentQuotesDao.insertQuote(quote.toSentQuoteEntity(dateTime))
         }
@@ -83,6 +89,15 @@ class DefaultQuotesRepository @Inject constructor(
                 .map { quotes ->
                     Resource.Success(quotes.map { it.toQuote() })
                 }
+        }
+    }
+
+    override suspend fun insertQuoteSendingError(
+        error: String,
+        dateTime: String
+    ): Resource<Unit> {
+        return safeDbCall {
+            errorsDao.insertError(ErrorsEntity(error, dateTime))
         }
     }
 }

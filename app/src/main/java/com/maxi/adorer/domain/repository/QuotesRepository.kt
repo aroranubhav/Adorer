@@ -15,4 +15,6 @@ interface QuotesRepository {
     suspend fun insetQuote(quote: Quote): Resource<Unit>
 
     fun getQuotes(): Flow<Resource<List<Quote>>>
+
+    suspend fun insertQuoteSendingError(error: String, dateTime: String): Resource<Unit>
 }

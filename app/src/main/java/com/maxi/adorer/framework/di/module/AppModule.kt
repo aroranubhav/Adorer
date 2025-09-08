@@ -11,8 +11,10 @@ import com.maxi.adorer.data.source.db.dao.QuotesDao
 import com.maxi.adorer.data.source.db.dao.SentQuotesDao
 import com.maxi.adorer.data.source.db.util.LocalConstants.QUOTES_DATABASE
 import com.maxi.adorer.data.source.filesystem.DefaultFileReader
+import com.maxi.adorer.domain.repository.SmsSender
 import com.maxi.adorer.domain.source.datastore.AppDatastore
 import com.maxi.adorer.domain.source.filesystem.FileReader
+import com.maxi.adorer.framework.sms.DefaultSmsSender
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -70,6 +72,13 @@ object AppModule {
         @ApplicationContext context: Context
     ): AppDatastore =
         DefaultAppDataStore(context)
+
+    @Provides
+    @Singleton
+    fun provideSmsSender(
+        @ApplicationContext context: Context
+    ): SmsSender =
+        DefaultSmsSender(context)
 
     @Provides
     @Singleton

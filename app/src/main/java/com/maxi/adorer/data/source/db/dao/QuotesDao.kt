@@ -16,7 +16,7 @@ interface QuotesDao {
 
     @Query(
         """SELECT * FROM quotes 
-        WHERE ID NOT IN (SELECT * FROM sent_quotes)
+        WHERE id NOT IN (SELECT id FROM sent_quotes)
         LIMIT 1
     """
     )

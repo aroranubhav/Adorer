@@ -14,5 +14,6 @@ object LocalConstants {
         const val ID = "id"
         const val QUOTE = "quote"
         const val DATE_TIME = "date_time"
+        const val ERROR = "error"
     }
 }

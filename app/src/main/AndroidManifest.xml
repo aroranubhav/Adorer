@@ -31,5 +31,21 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".framework.receiver.SmsSentReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.maxi.adorer.SMS_SENT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".framework.receiver.SmsDeliveredReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.maxi.adored_SMS_DELIVERED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest>

@@ -4,7 +4,7 @@ import com.maxi.adorer.domain.model.Quote
 import com.maxi.adorer.domain.repository.QuotesRepository
 import javax.inject.Inject
 
-class InsertSentQuoteUseCase @Inject constructor(
+class InsertQuoteUseCase @Inject constructor(
     private val repository: QuotesRepository
 ) {
 

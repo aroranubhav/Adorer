@@ -9,13 +9,14 @@ import com.maxi.adorer.common.Constants.USER_NUMBER
 import com.maxi.adorer.common.Resource
 import com.maxi.adorer.domain.usecase.GetQuoteUseCase
 import com.maxi.adorer.domain.usecase.SmsSenderUseCase
+import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
 
 @HiltWorker
 class QuotesWorker @AssistedInject constructor(
-    context: Context,
-    params: WorkerParameters,
+    @Assisted context: Context,
+    @Assisted params: WorkerParameters,
     private val getQuoteUseCase: GetQuoteUseCase,
     private val sendSmsUseCase: SmsSenderUseCase
 ) : CoroutineWorker(context, params) {

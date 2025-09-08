@@ -2,6 +2,7 @@ package com.maxi.adorer.framework.di.module
 
 import android.content.Context
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.maxi.adorer.common.DefaultDispatcherProvider
 import com.maxi.adorer.common.DispatcherProvider
 import com.maxi.adorer.data.source.datastore.DefaultAppDataStore
@@ -72,6 +73,13 @@ object AppModule {
         @ApplicationContext context: Context
     ): AppDatastore =
         DefaultAppDataStore(context)
+
+    @Provides
+    @Singleton
+    fun provideWorkManager(
+        @ApplicationContext context: Context
+    ): WorkManager =
+        WorkManager.getInstance(context)
 
     @Provides
     @Singleton

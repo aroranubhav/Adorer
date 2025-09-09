@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Adorer</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="go_ahead">Continue</string>
 </resources>

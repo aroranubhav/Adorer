@@ -23,7 +23,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.quotes.QuotesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,19 +34,11 @@
 
         <receiver
             android:name=".framework.receiver.SmsSentReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.maxi.adorer.SMS_SENT" />
-            </intent-filter>
-        </receiver>
+            android:exported="true" />
 
         <receiver
             android:name=".framework.receiver.SmsDeliveredReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.maxi.adored_SMS_DELIVERED" />
-            </intent-filter>
-        </receiver>
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

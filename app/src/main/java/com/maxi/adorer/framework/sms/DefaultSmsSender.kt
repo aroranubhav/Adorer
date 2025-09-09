@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.telephony.SmsManager
 import android.util.Log
-import com.maxi.adorer.common.Constants.SMS_DELIVERED_ACTION
-import com.maxi.adorer.common.Constants.SMS_SENT_ACTION
 import com.maxi.adorer.domain.repository.SmsSender
+import com.maxi.adorer.framework.receiver.SmsDeliveredReceiver
+import com.maxi.adorer.framework.receiver.SmsSentReceiver
 
 class DefaultSmsSender(
     private val context: Context
@@ -20,23 +20,42 @@ class DefaultSmsSender(
             val sentIntent = PendingIntent.getBroadcast(
                 context,
                 0,
-                Intent(SMS_SENT_ACTION),
+                Intent(
+                    context,
+                    SmsSentReceiver::class.java
+                ),
                 PendingIntent.FLAG_IMMUTABLE
             )
 
             val deliveredIntent = PendingIntent.getBroadcast(
                 context,
                 0,
-                Intent(SMS_DELIVERED_ACTION),
+                Intent(
+                    context,
+                    SmsDeliveredReceiver::class.java
+                ),
                 PendingIntent.FLAG_IMMUTABLE
             )
 
-            smsManager.sendTextMessage(number, null, message, sentIntent, deliveredIntent)
+            smsManager.sendTextMessage(
+                number,
+                null,
+                getMessage(message),
+                sentIntent,
+                deliveredIntent
+            )
+
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
+
+    private fun getMessage(quote: String): String =
+        buildString {
+            append("Hai you ❤\uFE0F!\n")
+            append(quote)
+        }
 }
 
 const val DefaultSmsSenderTAG = "DefaultSmsSender"

@@ -7,6 +7,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.maxi.adorer.common.Constants.USER_NUMBER
 import com.maxi.adorer.common.Resource
+import com.maxi.adorer.domain.source.datastore.AppDatastore
 import com.maxi.adorer.domain.usecase.GetQuoteUseCase
 import com.maxi.adorer.domain.usecase.SmsSenderUseCase
 import dagger.assisted.Assisted
@@ -18,7 +19,8 @@ class QuotesWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
     private val getQuoteUseCase: GetQuoteUseCase,
-    private val sendSmsUseCase: SmsSenderUseCase
+    private val sendSmsUseCase: SmsSenderUseCase,
+    private val datastore: AppDatastore
 ) : CoroutineWorker(context, params) {
 
     companion object {
@@ -39,6 +41,7 @@ class QuotesWorker @AssistedInject constructor(
 
                 if (response.isSuccess) {
                     Log.d(QUOTES_WORKER_TAG, "Message sent initiated successfully!")
+                    datastore.saveCurrentQuote(result.data)
                     Result.success()
                 } else {
                     Result.retry()

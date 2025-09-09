@@ -1,6 +1,7 @@
 package com.maxi.adorer.framework.di.module
 
 import com.maxi.adorer.data.repository.DefaultQuotesRepository
+import com.maxi.adorer.data.source.db.dao.ErrorsDao
 import com.maxi.adorer.data.source.db.dao.QuotesDao
 import com.maxi.adorer.data.source.db.dao.SentQuotesDao
 import com.maxi.adorer.domain.repository.QuotesRepository
@@ -21,11 +22,13 @@ object RepositoryModule {
     fun provideQuotesRepository(
         quotesDao: QuotesDao,
         sentQuotesDao: SentQuotesDao,
+        errorsDao: ErrorsDao,
         fileReader: FileReader,
         datastore: AppDatastore
     ): QuotesRepository = DefaultQuotesRepository(
         quotesDao,
         sentQuotesDao,
+        errorsDao,
         fileReader,
         datastore
     )

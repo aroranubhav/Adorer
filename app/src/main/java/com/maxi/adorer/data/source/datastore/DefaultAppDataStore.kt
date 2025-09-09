@@ -34,8 +34,10 @@ class DefaultAppDataStore(
         return prefs[dbSeedingDone] ?: false
     }
 
-    override suspend fun saveCurrentQuote(quote: Quote) {
-        val json = gson.toJson(quote)
+    override suspend fun saveCurrentQuote(quote: Quote?) {
+        val json = quote?.let {
+            gson.toJson(quote)
+        } ?: ""
         context.dataStore.edit { prefs ->
             prefs[currentQuote] = json
         }

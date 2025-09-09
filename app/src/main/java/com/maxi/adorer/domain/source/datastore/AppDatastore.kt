@@ -10,5 +10,5 @@ interface AppDatastore {
 
     suspend fun getCurrentQuote(): Quote?
 
-    suspend fun saveCurrentQuote(quote: Quote)
+    suspend fun saveCurrentQuote(quote: Quote?)
 }

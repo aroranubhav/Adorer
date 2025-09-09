@@ -1,5 +1,6 @@
 package com.maxi.adorer.data.repository
 
+import android.util.Log
 import com.maxi.adorer.common.Resource
 import com.maxi.adorer.data.common.safeDbCall
 import com.maxi.adorer.data.common.toQuotesEntityList
@@ -27,25 +28,33 @@ class DefaultQuotesRepository @Inject constructor(
     private val dataStore: AppDatastore
 ) : QuotesRepository {
 
+    companion object {
+        const val QUOTES_REPOSITORY_TAG = "QuotesRepository"
+    }
+
     override suspend fun seedDb(fileName: String): Resource<Unit> {
         return when (val insertResponse = safeDbCall {
             val quotes = fileReader.readQuotesFromFile(fileName)
             quotesDao.insertQuotes(quotes.toQuotesEntityList())
         }) {
             is Resource.Success -> {
+                Log.d(QUOTES_REPOSITORY_TAG, "DB seeding done")
                 dataStore.markDbSeedingDone()
                 Resource.Success(Unit)
             }
 
             is Resource.DatabaseError -> {
+                Log.e(QUOTES_REPOSITORY_TAG, "DB seeding failed: ${insertResponse.errorMessage}")
                 Resource.DatabaseError(insertResponse.errorMessage)
             }
 
             is Resource.IOError -> {
+                Log.e(QUOTES_REPOSITORY_TAG, "DB seeding failed: ${insertResponse.errorMessage}")
                 Resource.IOError(insertResponse.errorMessage)
             }
 
             is Resource.UnknownError -> {
+                Log.e(QUOTES_REPOSITORY_TAG, "DB seeding failed: error not known!")
                 Resource.UnknownError
             }
         }

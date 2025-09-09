@@ -31,6 +31,7 @@ class InsertQuoteWorker @AssistedInject constructor(
                     it,
                     Instant.now().toString()
                 )
+                datastore.saveCurrentQuote(null)
                 Result.success()
             } catch (e: Exception) {
                 Log.e(INSERT_QUOTE_WORKER_TAG, "Error while inserting quote: ${e.message}")

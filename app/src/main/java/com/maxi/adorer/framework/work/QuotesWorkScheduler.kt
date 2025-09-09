@@ -7,6 +7,10 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import androidx.work.workDataOf
 import com.maxi.adorer.common.Constants.USER_NUMBER
+import java.time.Duration
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 object QuotesWorkScheduler {
@@ -18,14 +22,16 @@ object QuotesWorkScheduler {
             USER_NUMBER to phoneNumber
         )
 
+        val initialDelay = calculateInitialDelay()
+
         val workRequest = PeriodicWorkRequestBuilder<QuotesWorker>(
-            30,
-            TimeUnit.MINUTES
+            24,
+            TimeUnit.HOURS
         )
             .setInputData(workData)
             .setInitialDelay(
-                5,
-                TimeUnit.MINUTES
+                initialDelay,
+                TimeUnit.MILLISECONDS
             ).setBackoffCriteria(
                 BackoffPolicy.EXPONENTIAL,
                 WorkRequest.MIN_BACKOFF_MILLIS,
@@ -38,5 +44,26 @@ object QuotesWorkScheduler {
             ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
+    }
+
+    private fun calculateInitialDelay(): Long {
+        val currZone = ZoneId.systemDefault()
+        val currTime = Instant.now()
+
+        val time7Am: Instant = LocalDateTime.now()
+            .withHour(7)
+            .withMinute(0)
+            .withSecond(0)
+            .atZone(currZone)
+            .toInstant()
+
+        val targetTime = if (currTime.isAfter(time7Am)) {
+            time7Am.plus(Duration.ofDays(1))
+        } else {
+            time7Am
+        }
+
+        val duration = Duration.between(currTime, targetTime)
+        return duration.toMillis()
     }
 }

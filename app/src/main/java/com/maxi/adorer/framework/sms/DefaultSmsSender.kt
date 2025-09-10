@@ -15,7 +15,7 @@ class DefaultSmsSender(
     override suspend fun sendMessage(number: String, message: String): Result<Unit> {
         return try {
             Log.d(DefaultSmsSenderTAG, "Current message to be sent: $message")
-            val smsManager = SmsManager.getDefault()
+            val smsManager = context.getSystemService(SmsManager::class.java)
 
             val sentIntent = PendingIntent.getBroadcast(
                 context,
@@ -53,8 +53,9 @@ class DefaultSmsSender(
 
     private fun getMessage(quote: String): String =
         buildString {
-            append("Hai you ❤\uFE0F!\n")
-            append(quote)
+            append("Good Morning Sunshine!\n")
+            append("$quote\n")
+            append("XOXO")
         }
 }
 

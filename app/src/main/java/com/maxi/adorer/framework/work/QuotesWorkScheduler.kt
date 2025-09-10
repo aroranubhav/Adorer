@@ -50,17 +50,17 @@ object QuotesWorkScheduler {
         val currZone = ZoneId.systemDefault()
         val currTime = Instant.now()
 
-        val time7Am: Instant = LocalDateTime.now()
-            .withHour(7)
+        val time12PM: Instant = LocalDateTime.now()
+            .withHour(12)
             .withMinute(0)
             .withSecond(0)
             .atZone(currZone)
             .toInstant()
 
-        val targetTime = if (currTime.isAfter(time7Am)) {
-            time7Am.plus(Duration.ofDays(1))
+        val targetTime = if (currTime.isAfter(time12PM)) {
+            time12PM.plus(Duration.ofDays(1))
         } else {
-            time7Am
+            time12PM
         }
 
         val duration = Duration.between(currTime, targetTime)
